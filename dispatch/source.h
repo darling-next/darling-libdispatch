@@ -54,7 +54,7 @@ DISPATCH_ASSUME_NONNULL_BEGIN
  * Dispatch sources are used to automatically submit event handler blocks to
  * dispatch queues in response to external events.
  */
-DISPATCH_SOURCE_DECL(dispatch_source);
+DISPATCH_SOURCE_DECL_SWIFT(dispatch_source, DispatchSource, DispatchSourceProtocol);
 
 __BEGIN_DECLS
 

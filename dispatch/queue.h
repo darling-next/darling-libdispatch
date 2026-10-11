@@ -68,6 +68,15 @@ DISPATCH_ASSUME_NONNULL_BEGIN
  */
 DISPATCH_DECL(dispatch_queue);
 
+/*
+ * The serial-executor queue class the Swift concurrency runtime puts a
+ * DispatchQueue's executor on (the macOS 14 SDK's DispatchSerialQueue).
+ * Darwin's libdispatch declares it in the same place; the runtime class comes
+ * from the Dispatch overlay's DarlingSerialExecutor.m until libdispatch
+ * defines it itself.
+ */
+DISPATCH_DECL_SUBCLASS(dispatch_queue_serial_executor, dispatch_queue);
+
 /*!
  * @typedef dispatch_queue_global_t
  *

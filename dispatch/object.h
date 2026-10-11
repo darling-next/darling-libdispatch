@@ -124,12 +124,20 @@ typedef union {
 		DISPATCH_DECL(name); \
 		OS_OBJECT_DECL_PROTOCOL(name, <NSObject>); \
 		OS_OBJECT_CLASS_IMPLEMENTS_PROTOCOL(name, name)
+#define DISPATCH_SOURCE_DECL_SWIFT(name, swift_name, protocol_name) \
+		DISPATCH_SWIFT_NAME(swift_name) \
+		DISPATCH_DECL(name); \
+		DISPATCH_SWIFT_NAME(protocol_name) \
+		OS_OBJECT_DECL_PROTOCOL(name, <NSObject>); \
+		OS_OBJECT_CLASS_IMPLEMENTS_PROTOCOL(name, name)
 #ifndef DISPATCH_DATA_DECL
 #define DISPATCH_DATA_DECL(name) OS_OBJECT_DECL_SWIFT(name)
 #endif // DISPATCH_DATA_DECL
 #else
 #define DISPATCH_SOURCE_DECL(name) \
 		DISPATCH_DECL(name);
+#define DISPATCH_SOURCE_DECL_SWIFT(name, swift_name, protocol_name) \
+		DISPATCH_SOURCE_DECL(name)
 #define DISPATCH_DATA_DECL(name) DISPATCH_DECL(name)
 #define DISPATCH_SOURCE_TYPE_DECL(name) \
 		DISPATCH_EXPORT const struct dispatch_source_type_s \
