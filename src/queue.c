@@ -4371,9 +4371,18 @@ void
 _dispatch_workloop_invoke(dispatch_workloop_t dwl,
 		dispatch_invoke_context_t dic, dispatch_invoke_flags_t flags)
 {
+#if !DISPATCH_USE_KEVENT_WORKLOOP
+	// Root workers carry an anonymous WLH. Nested drains need this workloop's
+	// identity for QoS checks and timers, without transferring TLS ownership.
+	// The queue invocation owns the workloop until its final release.
+	dispatch_wlh_t old_wlh = _dispatch_fake_wlh((dispatch_queue_t)dwl);
+#endif
 	flags &= ~(dispatch_invoke_flags_t)DISPATCH_INVOKE_REDIRECTING_DRAIN;
 	flags |= DISPATCH_INVOKE_WORKLOOP_DRAIN;
 	_dispatch_queue_class_invoke(dwl, dic, flags, 0, _dispatch_workloop_invoke2);
+#if !DISPATCH_USE_KEVENT_WORKLOOP
+	_dispatch_restore_wlh(old_wlh);
+#endif
 }
 
 DISPATCH_ALWAYS_INLINE
